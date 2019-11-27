@@ -1,0 +1,16 @@
+version: '2'
+services:
+  jh20191127-mongodb:
+    image: mongo:4.0.13
+    ports:
+      - '27017:27017'
+    command: mongos --configdb jh20191127-mongodb-config
+  jh20191127-mongodb-node:
+    build:
+      context: .
+      dockerfile: mongodb/MongoDB.Dockerfile
+    command: mongod --replSet rs1 --noprealloc --smallfiles
+  jh20191127-mongodb-config:
+    image: mongo:4.0.13
+    container_name: jh20191127-mongodb-config
+    command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
